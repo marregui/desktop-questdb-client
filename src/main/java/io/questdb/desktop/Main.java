@@ -149,7 +149,7 @@ public final class Main {
                 GTk.showErrorDialog(frame, "Column X is not numeric");
                 return;
             }
-            if (!SQLType.isNotNumeric(table.getColumnType(2))) {
+            if (SQLType.isNotNumeric(table.getColumnType(2))) {
                 GTk.showErrorDialog(frame, "Column Y is not numeric");
                 return;
             }

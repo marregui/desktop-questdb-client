@@ -43,7 +43,7 @@ public class SlidingPlotDemo extends JPanel {
         int refreshRateMillis = 135;
         Column xValues = new SlidingColumn("a", plot, windowSize);
         Column yValues = new SlidingColumn("sin", plot, windowSize);
-        plot.setDataSet("Sin(∂) in stepts of π/4", xValues, yValues);
+        plot.setDataSet("Sin(∂) in steps of π/4", xValues, yValues);
         Thread thread = new Thread(() -> {
             final double step = Math.PI / 90; // degrees to radians
             double angle = Math.PI;
