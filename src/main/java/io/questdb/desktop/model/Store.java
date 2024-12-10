@@ -19,7 +19,6 @@ import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 import io.questdb.desktop.GTk;
-import io.questdb.desktop.ui.metadata.Metadata;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,7 +41,7 @@ public abstract class Store<T extends StoreEntry> implements Closeable, Iterable
     }.getType();
 
     static {
-        synchronized (Metadata.class) {
+        synchronized (Store.class) {
             String userHome = System.getProperty("user.home");
             ROOT_PATH = new File(userHome != null ? userHome : ".", "QUESTS").getAbsoluteFile();
             if (!ROOT_PATH.exists()) {

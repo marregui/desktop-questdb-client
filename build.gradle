@@ -21,7 +21,7 @@ java {
 }
 
 dependencies {
-    implementation 'org.questdb:questdb:7.3.2'
+    implementation 'org.questdb:questdb:8.2.1'
     implementation 'org.postgresql:postgresql:42.6.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.7.0'

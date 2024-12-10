@@ -12,7 +12,6 @@ import io.questdb.desktop.model.DbConn;
 import io.questdb.desktop.model.SQLExecutor;
 import io.questdb.desktop.model.SQLExecutionRequest;
 import io.questdb.desktop.model.SQLExecutionResponse;
-import io.questdb.desktop.ui.metadata.Metadata;
 import io.questdb.desktop.ui.plotting.Plot;
 import io.questdb.desktop.ui.plotting.TableColumn;
 import io.questdb.desktop.model.SQLPagedTableModel;
@@ -36,12 +35,10 @@ public final class Main {
     private final Conns conns;
     private final SQLResultsTable results;
     private final SQLExecutor executor;
-    private final Metadata meta;
     private final Plot plot;
     private final JMenuItem toggleConns;
     private final JMenuItem togglePlot;
     private final JMenuItem toggleQuestDB;
-    private final JMenuItem toggleMeta;
     private final JMenuItem toggleAssignedConn;
     private ServerMain questDb;
 
@@ -50,7 +47,6 @@ public final class Main {
         frame.setIconImage(GTk.Icon.QUESTDB.icon().getImage());
         int dividerHeight = (int) (frame.getHeight() * 0.6);
         executor = new SQLExecutor();
-        meta = new Metadata(frame, "Metadata Files", this::dispatchEvent);
         plot = new Plot(frame, "Plot", this::dispatchEvent);
         conns = new Conns(frame, this::dispatchEvent);
         commands = new MainEditor(this::dispatchEvent);
@@ -63,7 +59,6 @@ public final class Main {
         toggleConns = new JMenuItem();
         toggleAssignedConn = new JMenuItem();
         toggleQuestDB = new JMenuItem();
-        toggleMeta = new JMenuItem();
         togglePlot = new JMenuItem();
         frame.setJMenuBar(createMenuBar());
         Runtime.getRuntime().addShutdownHook(new Thread(this::close, "shutdown-hook"));
@@ -109,8 +104,6 @@ public final class Main {
         menu.addSeparator();
         menu.add(GTk.menuItem(toggleQuestDB, GTk.Icon.ROCKET, "Run QuestDB", KeyEvent.VK_PERIOD, this::onToggleQuestDB));
         menu.addSeparator();
-        menu.add(GTk.menuItem(toggleMeta, GTk.Icon.META, "Meta Explorer", KeyEvent.VK_M, this::onToggleMeta));
-        menu.addSeparator();
         menu.add(GTk.menuItem(togglePlot, GTk.Icon.PLOT, "Plot", KeyEvent.VK_J, this::onTogglePlot));
         menu.addSeparator();
         menu.add(connsMenu);
@@ -136,10 +129,6 @@ public final class Main {
             toggleConns.setText(wasVisible ? "Connections" : "Hide Connections");
             toggleConns.setIcon((wasVisible ? GTk.Icon.CONN_SHOW : GTk.Icon.CONN_HIDE).icon());
         });
-    }
-
-    private void onToggleMeta(ActionEvent event) {
-        onToggleDialog(meta, wasVisible -> toggleMeta.setText(wasVisible ? "Meta Explorer" : "Close Meta Explorer"));
     }
 
     private void onTogglePlot(ActionEvent event) {
@@ -210,8 +199,6 @@ public final class Main {
                 onSQLExecutorEvent(EventProducer.eventType(event), (SQLExecutionResponse) data);
             } else if (source instanceof Conns) {
                 onConnsEvent(EventProducer.eventType(event), data);
-            } else if (source instanceof Metadata) {
-                onMetaEvent(EventProducer.eventType(event));
             } else if (source instanceof Plot) {
                 onPlotEvent(EventProducer.eventType(event));
             }
@@ -248,12 +235,6 @@ public final class Main {
                 results.close();
                 results.displayError(res.getError());
             }
-        }
-    }
-
-    private void onMetaEvent(Metadata.EventType event) {
-        if (event == Metadata.EventType.HIDE_REQUEST) {
-            onToggleMeta(null);
         }
     }
 
@@ -300,7 +281,6 @@ public final class Main {
         Misc.free(conns);
         Misc.free(commands);
         Misc.free(results);
-        Misc.free(meta);
         Misc.free(questDb);
     }
 }
