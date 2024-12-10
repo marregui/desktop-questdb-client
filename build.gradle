@@ -4,6 +4,7 @@ plugins {
     id 'application'
     id 'net.nemerosa.versioning' version '2.15.0'
     // https://plugins.gradle.org/plugin/net.nemerosa.versioning
+    id 'org.ajoberstar.grgit' version '5.0.0-rc.3'
 }
 
 group = 'io.questdb.desktop'
@@ -86,5 +87,5 @@ test {
 }
 
 wrapper {
-    gradleVersion = '8.3'
+    gradleVersion = '8.10'
 }
